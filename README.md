@@ -373,3 +373,26 @@ export function verifyTelegramWebAppData(initData: string, botToken: string): bo
 ## 📄 Licencia
 
 MIT © Tu Agencia Digital. Código abierto para uso comercial y personal.
+
+## Almacenamiento de pedidos (SQLite)
+
+Los pedidos se guardan en el servidor mediante SQLite, en `data/orders.sqlite` por defecto. La API permite consultar, registrar y borrar el historial del usuario. Para cambiar la ubicación, define `DATABASE_PATH` en `.env`.
+
+1. Copia `.env.example` a `.env` y configura `TELEGRAM_BOT_TOKEN` con el token del bot.
+2. Ejecuta `npm install` y luego `npm run dev`. El frontend se abre en `http://localhost:3000` y la API corre en el puerto 3001.
+3. Para producción, ejecuta `npm run build` y `npm start` en un servidor Node con almacenamiento persistente. El servidor sirve `dist` y la API en el mismo puerto.
+
+El servidor verifica `initData` de Telegram en producción y deriva de ahí el usuario propietario del pedido. Mantén privado el token del bot. En desarrollo, permite el ID de demostración configurado en la interfaz.
+
+**Importante:** este cambio persiste el historial, pero el flujo de pago actual todavía contiene simulación y no implementa un webhook de Telegram para confirmar los cobros. No uses el estado `paid` del navegador como prueba de pago real. Para producción comercial, el servidor debe crear facturas y registrar el pago desde `successful_payment` recibido por webhook.
+
+## Despliegue en Vercel
+
+El proyecto incluye `vercel.json` para compilar Vite como sitio estático y `api/orders.js` como función serverless. En local, `npm run dev` sigue usando SQLite; en Vercel, los pedidos se guardan en Neon Postgres porque el disco de una función serverless no es persistente.
+
+1. Sube el repositorio a GitHub y, desde Vercel, importa `ximosa/App-telegram` como proyecto. El comando de compilación es `npm run build` y la salida es `dist`.
+2. En Vercel, instala la integración Neon desde Marketplace y vincúlala al proyecto para crear `DATABASE_URL`.
+3. En **Settings > Environment Variables**, añade `TELEGRAM_BOT_TOKEN` para Production, Preview y Development. No uses el prefijo `VITE_` para secretos.
+4. Guarda los cambios y crea un nuevo deployment. Vercel aplica las variables al siguiente deployment, no a los que ya están publicados.
+
+`GEMINI_API_KEY` es opcional y solo se necesita si se activa la funcionalidad Gemini. El archivo `.env` local no se sube al repositorio; `.env.example` contiene nombres y valores de muestra, nunca secretos reales.

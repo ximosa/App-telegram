@@ -1,15 +1,12 @@
 import React from 'react';
-import { X, MoreVertical, ShieldCheck, Check, Sparkles } from 'lucide-react';
-import { TelegramUserData } from '../types';
+import { X, MoreVertical } from 'lucide-react';
 
 interface TelegramHeaderBarProps {
-  user: TelegramUserData;
   isRealTelegram: boolean;
   onClose?: () => void;
 }
 
 export const TelegramHeaderBar: React.FC<TelegramHeaderBarProps> = ({
-  user,
   isRealTelegram,
   onClose,
 }) => {
@@ -28,7 +25,7 @@ export const TelegramHeaderBar: React.FC<TelegramHeaderBarProps> = ({
       <div className="flex flex-col items-center text-center">
         <div className="flex items-center gap-1.5">
           <span className="text-xs font-semibold text-slate-100 tracking-tight">
-            DevAgency Bot
+            Webgae
           </span>
           <span className="w-3.5 h-3.5 rounded-full bg-sky-500 text-white flex items-center justify-center text-[9px] font-bold">
             ✓
@@ -45,8 +42,8 @@ export const TelegramHeaderBar: React.FC<TelegramHeaderBarProps> = ({
           onClick={() => {
             if (window.Telegram?.WebApp?.showPopup) {
               window.Telegram.WebApp.showPopup({
-                title: 'DevAgency Bot',
-                message: 'Servicios web premium pagados con Telegram Stars.',
+                title: 'Webgae',
+                message: 'Explora nuestros servicios digitales y revisa tus pedidos.',
                 buttons: [{ type: 'ok', text: 'Entendido' }]
               });
             } else {

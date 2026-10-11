@@ -1,6 +1,6 @@
 {
-  "name": "Telegram Mini App Agency (Stars)",
-  "description": "Telegram Mini App para agencia de desarrollo web con catálogo de servicios y pagos con Telegram Stars (XTR) con código Astro y simulador.",
+  "name": "Webgae",
+  "description": "Servicios digitales para tu negocio, con pedidos e integracion de Telegram Stars.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -9,6 +9,13 @@ interface ServiceCardProps {
 }
 
 export const ServiceCard: React.FC<ServiceCardProps> = ({ service, onBuy, isProcessing = false }) => {
+  const categoryNames = {
+    audit: 'Auditoría',
+    maintenance: 'Mantenimiento',
+    performance: 'Rendimiento',
+    development: 'Desarrollo web',
+  };
+
   const getCategoryIcon = () => {
     switch (service.category) {
       case 'audit':
@@ -40,7 +47,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, onBuy, isProc
       <div className="flex items-start justify-between gap-3 mb-2">
         <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
           {getCategoryIcon()}
-          <span className="capitalize">{service.category}</span>
+          <span>{categoryNames[service.category]}</span>
           <span aria-hidden="true">·</span>
           <span>{service.deliveryTime}</span>
         </div>
@@ -53,22 +60,26 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, onBuy, isProc
         {service.tagline}
       </p>
 
-      {/* Price tag with Telegram Stars */}
-      <div className="flex items-baseline gap-2 mb-4 p-3 bg-slate-950/60 rounded-xl border border-slate-800/50">
-        <div className="flex items-center gap-1.5">
-          <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center text-slate-950 font-bold text-xs shadow-inner star-glow">
-            ★
-          </div>
-          <span className="text-2xl font-bold tracking-tight text-yellow-300">
-            {service.starsPrice.toLocaleString()}
+      {/* Euro price first; Stars are shown as the Telegram payment currency */}
+      <div className="mb-4 p-3.5 bg-slate-950/60 rounded-xl border border-slate-800/50">
+        <div className="flex items-baseline justify-between gap-2">
+          <span className="text-3xl font-bold tracking-tight text-yellow-300">
+            {service.pricePrefix && <span className="mr-1 text-sm font-medium">{service.pricePrefix}</span>}
+            {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(service.priceEur)}
           </span>
-          <span className="text-xs font-semibold text-amber-200/90 tracking-wide">
-            STARS (XTR)
-          </span>
+          {service.priceUnit && <span className="text-xs text-slate-400">{service.priceUnit}</span>}
         </div>
-        <span className="text-xs text-slate-500 ml-auto">
-          {service.fiatEstimate}
-        </span>
+        {service.paymentEnabled === false ? (
+          <p className="mt-1.5 text-[11px] text-slate-400">Presupuesto personalizado antes de empezar.</p>
+        ) : (
+          <>
+            <p className="mt-1.5 text-[11px] text-slate-400">
+              Se paga con Telegram Stars: <span className="text-amber-200">{service.starsPrice} {'\u2B50'}</span>
+            </p>
+            <p className="text-[10px] text-slate-500">Stars es la moneda de pago dentro de Telegram.</p>
+            {service.priceUnit === 'por mes' && <p className="text-[10px] text-slate-500">Renovacion manual; no se cobra automaticamente.</p>}
+          </>
+        )}
       </div>
 
       {/* Features list */}
@@ -87,21 +98,28 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, onBuy, isProc
       </div>
 
       {/* Call to action button */}
-      <button
-        onClick={() => onBuy(service)}
-        disabled={isProcessing}
-        className={`w-full py-3 px-4 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] ${
-          service.popular
-            ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-600/25 hover:from-sky-400 hover:to-blue-500'
-            : 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700'
-        } disabled:opacity-50 disabled:cursor-not-allowed`}
-      >
-        <span>Comprar con Telegram Stars</span>
-        <div className="flex items-center gap-0.5 font-bold text-amber-300 text-xs bg-black/20 px-1.5 py-0.5 rounded">
-          <span>★</span>
-          <span>{service.starsPrice}</span>
-        </div>
-      </button>
+      {service.paymentEnabled === false && service.contactUrl ? (
+        <a
+          href={service.contactUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full py-3 px-4 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700"
+        >
+          Solicitar presupuesto
+        </a>
+      ) : (
+        <button
+          onClick={() => onBuy(service)}
+          disabled={isProcessing}
+          className={`w-full py-3 px-4 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] ${
+            service.popular
+              ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-600/25 hover:from-sky-400 hover:to-blue-500'
+              : 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700'
+          } disabled:opacity-50 disabled:cursor-not-allowed`}
+        >
+          <span>Contratar por {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(service.priceEur)}</span>
+        </button>
+      )}
     </div>
   );
 };

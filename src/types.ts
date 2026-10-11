@@ -4,7 +4,11 @@ export interface AgencyService {
   tagline: string;
   description: string;
   starsPrice: number; // in XTR (Telegram Stars)
-  fiatEstimate: string; // approx equivalent in USD/EUR
+  priceEur: number;
+  pricePrefix?: string;
+  priceUnit?: string;
+  paymentEnabled?: boolean;
+  contactUrl?: string;
   deliveryTime: string;
   category: 'audit' | 'maintenance' | 'performance' | 'development';
   popular?: boolean;
@@ -26,6 +30,7 @@ export interface PurchaseOrder {
   serviceId: string;
   serviceName: string;
   starsPaid: number;
+  priceEur: number;
   currency: 'XTR';
   timestamp: number;
   status: 'paid' | 'cancelled' | 'failed' | 'pending';

@@ -42,6 +42,7 @@ export const StarsPaymentModal: React.FC<StarsPaymentModalProps> = ({
           serviceId: service.id,
           serviceName: service.name,
           starsPaid: service.starsPrice,
+          priceEur: service.priceEur,
           currency: 'XTR',
           timestamp: Date.now(),
           status: 'paid',
@@ -75,6 +76,7 @@ export const StarsPaymentModal: React.FC<StarsPaymentModalProps> = ({
               serviceId: service.id,
               serviceName: service.name,
               starsPaid: service.starsPrice,
+              priceEur: service.priceEur,
               currency: 'XTR',
               timestamp: Date.now(),
               status: 'paid',
@@ -105,7 +107,7 @@ export const StarsPaymentModal: React.FC<StarsPaymentModalProps> = ({
               ★
             </div>
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
-              Telegram Stars Invoice (XTR)
+              Confirma tu pedido
             </span>
           </div>
           <button
@@ -122,35 +124,31 @@ export const StarsPaymentModal: React.FC<StarsPaymentModalProps> = ({
             <>
               {/* Product Summary */}
               <div className="space-y-1">
-                <span className="text-xs text-sky-400 font-medium">Factura de servicio</span>
+                <span className="text-xs text-sky-400 font-medium">Resumen de compra</span>
                 <h4 className="text-base font-semibold text-slate-100">{service.name}</h4>
                 <p className="text-xs text-slate-400">{service.tagline}</p>
               </div>
 
               {/* Price Breakdown */}
-              <div className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 space-y-2">
+              <div className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 space-y-3">
                 <div className="flex justify-between items-center text-xs text-slate-400">
-                  <span>Comprador (Telegram):</span>
-                  <span className="text-slate-200 font-mono">
-                    {user.first_name} {user.username ? `(@${user.username})` : `(ID: ${user.id})`}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center text-xs text-slate-400">
-                  <span>Moneda de pago:</span>
-                  <span className="text-amber-300 font-medium">Telegram Stars (XTR)</span>
+                  <span>Servicio:</span>
+                  <span className="text-slate-200">{service.name}</span>
                 </div>
                 <div className="flex justify-between items-center text-xs text-slate-400">
                   <span>Plazo de entrega:</span>
                   <span className="text-slate-200">{service.deliveryTime}</span>
                 </div>
-                <div className="pt-2 border-t border-slate-800/80 flex justify-between items-baseline">
-                  <span className="text-sm font-medium text-slate-200">Total a pagar:</span>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xl font-bold text-yellow-300">
-                      {service.starsPrice}
+                <div className="pt-2 border-t border-slate-800/80">
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-sm font-medium text-slate-200">Precio:</span>
+                    <span className="text-2xl font-bold text-yellow-300">
+                      {service.pricePrefix ? `${service.pricePrefix} ` : ''}{new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(service.priceEur)} {service.priceUnit ? `/ ${service.priceUnit.replace('por ', '')}` : ''}
                     </span>
-                    <span className="text-xs font-bold text-yellow-400">★ STARS</span>
                   </div>
+                  <p className="mt-1 text-right text-[11px] text-slate-400">
+                    Se cobra en Telegram Stars ({service.starsPrice} {'\u2B50'})
+                  </p>
                 </div>
               </div>
 
@@ -158,7 +156,7 @@ export const StarsPaymentModal: React.FC<StarsPaymentModalProps> = ({
               <div className="flex items-start gap-2.5 text-xs text-slate-400 bg-sky-950/30 border border-sky-900/50 p-3 rounded-xl">
                 <Shield className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
                 <p className="leading-relaxed">
-                  Las compras con <strong className="text-sky-300 font-medium">Telegram Stars</strong> no requieren ingresar tarjetas ni registros. Se debitan directamente del saldo de Stars de tu cuenta de Telegram o de la App Store / Google Play.
+                  Telegram Stars es la moneda digital que se usa para pagar dentro de Telegram. Se restarán {service.starsPrice} {'\u2B50'} de tu saldo al confirmar.{service.priceUnit === 'por mes' && ' La renovacion mensual no es automatica.'}
                 </p>
               </div>
 
@@ -168,8 +166,7 @@ export const StarsPaymentModal: React.FC<StarsPaymentModalProps> = ({
                   onClick={() => handleSimulatePayment('paid')}
                   className="w-full py-3.5 px-4 rounded-xl font-semibold text-sm bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-slate-950 hover:opacity-95 shadow-lg shadow-amber-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                 >
-                  <span>Pagar {service.starsPrice} Stars (XTR)</span>
-                  <span className="text-xs font-bold">★</span>
+                  <span>Continuar al pago</span>
                 </button>
 
                 <div className="flex items-center justify-between gap-2 pt-1">

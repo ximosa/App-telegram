@@ -1,87 +1,107 @@
 import { AgencyService } from '../types';
 
+// Los importes en Stars usan la tarifa interna configurada de 50 Stars por euro.
 export const AGENCY_SERVICES: AgencyService[] = [
   {
     id: 'seo-audit-express',
-    name: 'Auditoría SEO & Web Express',
-    tagline: 'Diagnóstico técnico completo en 24 horas',
-    description: 'Revisión exhaustiva de arquitectura web, velocidad de carga, indexación en motores de búsqueda, seguridad SSL y reporte ejecutivo con checklist de acciones inmediatas.',
-    starsPrice: 250, // 250 Telegram Stars
-    fiatEstimate: '~$5.00 USD',
+    name: 'Auditoría SEO y rendimiento',
+    tagline: 'Revisión clara de los puntos que frenan la visibilidad y velocidad de tu web.',
+    description: 'Auditoría inicial de SEO técnico, rendimiento y seguridad con recomendaciones prioritarias.',
+    priceEur: 5,
+    priceUnit: 'por auditoría',
+    starsPrice: 250,
+    paymentEnabled: true,
     deliveryTime: '24 horas',
     category: 'audit',
-    popular: true,
     features: [
-      'Análisis de Core Web Vitals en móvil y escritorio',
-      'Auditoría SEO On-Page (metaetiquetas, canonicals, sitemap)',
-      'Chequeo de seguridad HTTPS, cabeceras y vulnerabilidades',
-      'Informe PDF accionable prioritario (Urgente / Medio / Bajo)'
+      'Revisión básica de Core Web Vitals en móvil y escritorio',
+      'Comprobación de títulos, metadescripciones e indexación',
+      'Revisión inicial de HTTPS y configuración técnica',
+      'Lista de mejoras recomendadas por prioridad',
     ],
-    scope: [
-      '1 dominio web',
-      'Hasta 50 URLs rastreadas',
-      'Sesión de preguntas y respuestas vía Telegram'
-    ]
+    scope: ['1 sitio web', 'Auditoría inicial; las mejoras se presupuestan aparte'],
   },
   {
     id: 'monthly-maintenance',
-    name: 'Pack Mantenimiento Mensual Pro',
-    tagline: 'Tu web protegida, rápida y siempre actualizada',
-    description: 'Tranquilidad total para tu negocio. Nos encargamos de las copias de seguridad diarias, actualización segura de plugins y librerías, monitorización de caídas en tiempo real y soporte prioritario.',
-    starsPrice: 750, // 750 Telegram Stars
-    fiatEstimate: '~$15.00 USD / mes',
-    deliveryTime: 'Servicio continuo (30 días)',
+    name: 'Mantenimiento web mensual',
+    tagline: 'Actualizaciones, copias de seguridad y seguimiento para cuidar tu web.',
+    description: 'Servicio mensual de mantenimiento para mantener la web actualizada y detectar incidencias.',
+    priceEur: 15,
+    priceUnit: 'por mes',
+    starsPrice: 750,
+    paymentEnabled: true,
+    deliveryTime: 'Servicio mensual',
     category: 'maintenance',
     features: [
-      'Backups diarios automatizados en almacenamiento externo',
-      'Actualizaciones semanales testeadas en entorno staging',
-      'Monitorización de uptime 24/7 con alertas instantáneas',
-      '3 horas mensuales de soporte técnico o ajustes de contenido'
+      'Copias de seguridad periódicas',
+      'Actualizaciones de WordPress y plugins',
+      'Seguimiento básico de disponibilidad',
+      'Hasta 3 horas al mes para soporte o ajustes',
     ],
-    scope: [
-      'Monitoreo activo cada 5 minutos',
-      'Restauración de emergencia incluida sin coste extra',
-      'Canal privado de Telegram con desarrollador asignado'
-    ]
+    scope: ['Servicio renovable cada mes', 'La renovación no es automática'],
   },
   {
-    id: 'speed-optimization',
-    name: 'Micro-servicio Core Web Vitals Boost',
-    tagline: 'Optimización radical de velocidad para superar 90+ PageSpeed',
-    description: 'Mejora inmediata de tiempos de respuesta, reducción de rebote y aumento de conversiones. Minificación de assets, conversión de imágenes a formatos de última generación y optimización de render blocking scripts.',
-    starsPrice: 450, // 450 Telegram Stars
-    fiatEstimate: '~$9.00 USD',
-    deliveryTime: '48 horas',
-    category: 'performance',
+    id: 'landing-page',
+    name: 'Landing page a medida',
+    tagline: 'Una página profesional para presentar tus servicios y captar clientes.',
+    description: 'Diseño y desarrollo de una landing page responsive, preparada para campañas, promociones y captación de contactos.',
+    priceEur: 450,
+    pricePrefix: '',
+    priceUnit: 'por proyecto',
+    starsPrice: 22500,
+    paymentEnabled: true,
+    deliveryTime: 'Plazo acordado contigo',
+    category: 'development',
+    popular: true,
     features: [
-      'Optimización de LCP (Largest Contentful Paint) < 2.5s',
-      'Eliminación de Cumulative Layout Shift (CLS) < 0.1',
-      'Compresión y redimensionado WebP/AVIF automatizado',
-      'Configuración de caché HTTP y headers CDN'
+      'Diseño personalizado y adaptable a móvil, tablet y ordenador',
+      'Formulario de contacto',
+      'Optimización SEO básica',
+      '2 rondas de revisiones',
+      '1 mes de soporte tras la entrega',
     ],
-    scope: [
-      'Home + 2 páginas clave (ej. checkout o servicios)',
-      'Garantía de aumento medible en Google PageSpeed Insights'
-    ]
+    scope: ['Proyecto cerrado desde 450 €', 'El alcance final se confirma antes de empezar'],
   },
   {
-    id: 'tma-custom-setup',
-    name: 'Integración Telegram Mini App & Bot',
-    tagline: 'Arquitectura lista para vender en Telegram con Stars',
-    description: 'Desarrollamos e integramos tu propia Mini App en Astro o React conectada a tu backend con validación criptográfica de initData y pasarela de Stars.',
-    starsPrice: 1200, // 1200 Telegram Stars
-    fiatEstimate: '~$24.00 USD',
-    deliveryTime: '3-5 días hábiles',
+    id: 'woocommerce-store',
+    name: 'Tienda online con WooCommerce',
+    tagline: 'Vende tus productos con una tienda online fácil de gestionar.',
+    description: 'Tienda online basada en WooCommerce con catálogo, pagos y gestión de inventario.',
+    priceEur: 850,
+    pricePrefix: '',
+    priceUnit: 'por proyecto',
+    starsPrice: 42500,
+    paymentEnabled: true,
+    deliveryTime: 'Plazo acordado contigo',
     category: 'development',
     features: [
-      'Setup en @BotFather con menú interactivo y botón WebApp',
-      'Integración del SDK @telegram-apps/sdk o telegram-web-app.js',
-      'Generación de Invoice Links de Stars en tu servidor',
-      'Validación de pagos con webhook y base de datos'
+      'Configuración inicial de hasta 20 productos',
+      'Integración de pasarela de pago',
+      'Gestión de inventario y panel de administración',
+      '5 rondas de revisiones',
+      '3 meses de soporte y formación para gestionar la tienda',
     ],
-    scope: [
-      'Repositorio de código listo para despliegue en Vercel/Cloudflare',
-      'Soporte de homologación y testing en Testnet/Producción'
-    ]
-  }
+    scope: ['Proyecto cerrado desde 850 €', 'Productos adicionales y funciones especiales se presupuestan aparte'],
+  },
+  {
+    id: 'custom-development-hour',
+    name: 'Desarrollo web a medida',
+    tagline: 'Ayuda experta para mejorar o ampliar tu web, pagando por el trabajo realizado.',
+    description: 'Desarrollo frontend y funcionalidades a medida para proyectos existentes o nuevos.',
+    priceEur: 25,
+    pricePrefix: 'Desde',
+    priceUnit: 'por hora',
+    starsPrice: 1250,
+    paymentEnabled: false,
+    contactUrl: 'https://webgae.com/contact',
+    deliveryTime: 'Por horas, según el proyecto',
+    category: 'development',
+    features: [
+      'Desarrollo con React, Next.js, Astro o WordPress',
+      'Integración de APIs y nuevas funcionalidades',
+      'Sin compromiso mínimo: se factura el trabajo realizado',
+      'Soporte incluido durante el trabajo contratado',
+    ],
+    scope: ['Tarifa desde 25 € por hora', 'Antes de empezar se acuerdan las tareas y el tiempo estimado'],
+  },
 ];

@@ -19,7 +19,7 @@ export const OrdersDrawer: React.FC<OrdersDrawerProps> = ({ isOpen, onClose, ord
         <div className="flex items-center justify-between p-4 border-b border-slate-800">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-            <h3 className="text-sm font-semibold text-slate-100">Mis Contrataciones (Stars)</h3>
+            <h3 className="text-sm font-semibold text-slate-100">Mis pedidos</h3>
           </div>
           <button
             onClick={onClose}
@@ -55,12 +55,15 @@ export const OrdersDrawer: React.FC<OrdersDrawerProps> = ({ isOpen, onClose, ord
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-800/50 text-slate-400">
-                  <div className="flex items-center gap-1 text-amber-300 font-semibold">
-                    <span>★ {order.starsPaid} XTR</span>
+                <div className="flex items-end justify-between gap-2 pt-2 border-t border-slate-800/50">
+                  <div>
+                    <p className="text-lg font-bold text-yellow-300">
+                      {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(order.priceEur || order.starsPaid / 50)}
+                    </p>
+                    <p className="text-[10px] text-slate-500">{order.starsPaid} Stars de Telegram</p>
                   </div>
-                  <span className="text-[11px] text-slate-500">
-                    {new Date(order.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} · {new Date(order.timestamp).toLocaleDateString()}
+                  <span className="text-[11px] text-slate-500 text-right">
+                    {new Date(order.timestamp).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })} - {new Date(order.timestamp).toLocaleDateString('es-ES')}
                   </span>
                 </div>
               </div>
@@ -71,7 +74,7 @@ export const OrdersDrawer: React.FC<OrdersDrawerProps> = ({ isOpen, onClose, ord
         {/* Footer */}
         {orders.length > 0 && (
           <div className="p-3 border-t border-slate-800 bg-slate-950 flex justify-between items-center text-xs">
-            <span className="text-slate-400 text-[11px]">Total acumulado: {orders.reduce((acc, o) => acc + o.starsPaid, 0)} Stars</span>
+            <span className="text-slate-400 text-[11px]">Total: {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(orders.reduce((acc, o) => acc + (o.priceEur || o.starsPaid / 50), 0))}</span>
             <button
               onClick={onClear}
               className="text-[11px] text-rose-400 hover:text-rose-300 transition-colors"
