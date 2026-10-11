@@ -68,24 +68,34 @@ export default function App() {
     setSelectedServiceForPayment(service);
   };
 
-  const handlePaymentSuccess = async (newOrder: PurchaseOrder) => {
-    const headers = new Headers({ 'Content-Type': 'application/json', 'x-demo-user-id': String(telegramUser.id) });
+  const handlePaymentSuccess = async (_newOrder: PurchaseOrder) => {
+    const headers = new Headers({ 'x-demo-user-id': String(telegramUser.id) });
     const initData = window.Telegram?.WebApp?.initData;
     if (initData) headers.set('x-telegram-init-data', initData);
     try {
-      const response = await fetch('/api/orders', { method: 'POST', headers, body: JSON.stringify(newOrder) });
-      if (!response.ok) throw new Error(`No se pudo guardar el pedido (${response.status})`);
-      const listResponse = await fetch('/api/orders', { headers });
-      if (!listResponse.ok) throw new Error(`No se pudo actualizar el historial (${listResponse.status})`);
-      setOrders(await listResponse.json());
+      const response = await fetch('/api/orders', { headers });
+      if (!response.ok) throw new Error(`No se pudo actualizar el historial (${response.status})`);
+      setOrders(await response.json());
       setSelectedServiceForPayment(null);
       setIsOrdersOpen(true);
     } catch (error) {
-      console.error('Error guardando pedido:', error);
-      window.alert('No se pudo guardar el pedido en la base de datos. Comprueba que el servidor esté activo e inténtalo de nuevo.');
+      console.error('Error actualizando pedidos:', error);
+      window.alert('El pago se confirmó, pero no se pudo actualizar el historial. Vuelve a abrir Mis pedidos.');
     }
   };
 
+  const handleClosePayment = async () => {
+    setSelectedServiceForPayment(null);
+    const headers = new Headers({ 'x-demo-user-id': String(telegramUser.id) });
+    const initData = window.Telegram?.WebApp?.initData;
+    if (initData) headers.set('x-telegram-init-data', initData);
+    try {
+      const response = await fetch('/api/orders', { headers });
+      if (response.ok) setOrders(await response.json());
+    } catch (error) {
+      console.error('Error actualizando pedidos:', error);
+    }
+  };
   const handleClearOrders = async () => {
     const headers = new Headers({ 'x-demo-user-id': String(telegramUser.id) });
     const initData = window.Telegram?.WebApp?.initData;
@@ -125,7 +135,7 @@ export default function App() {
               <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
                 <div>
                   <h1 className="text-2xl font-bold text-white tracking-tight">
-                    ¡Hola, {telegramUser.first_name}! 👋
+                    Â¡Hola, {telegramUser.first_name}! ðŸ‘‹
                   </h1>
                   <p className="text-xs text-slate-400 mt-0.5">
                     Soluciones digitales para hacer crecer tu negocio.
@@ -138,7 +148,7 @@ export default function App() {
               <div className="relative overflow-hidden bg-gradient-to-r from-amber-950/40 via-yellow-950/20 to-slate-900 border border-amber-500/30 rounded-2xl p-4 shadow-sm">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-yellow-300 flex items-center justify-center font-bold text-lg shrink-0 shadow-inner star-glow">
-                    ★
+                    â˜…
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
@@ -147,7 +157,7 @@ export default function App() {
                       </h3>
                     </div>
                     <p className="text-xs text-amber-100/70 leading-relaxed">
-                      Consulta cada servicio, revisa su precio y solicita la contratación desde Telegram.
+                      Consulta cada servicio, revisa su precio y solicita la contrataciÃ³n desde Telegram.
                     </p>
                   </div>
                 </div>
@@ -182,7 +192,7 @@ export default function App() {
           service={selectedServiceForPayment}
           user={telegramUser}
           isOpen={!!selectedServiceForPayment}
-          onClose={() => setSelectedServiceForPayment(null)}
+          onClose={handleClosePayment}
           onPaymentSuccess={handlePaymentSuccess}
           isRealTelegram={isRealTelegram}
         />
