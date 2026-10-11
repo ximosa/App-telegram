@@ -135,7 +135,7 @@ export default function App() {
               <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
                 <div>
                   <h1 className="text-2xl font-bold text-white tracking-tight">
-                    Â¡Hola, {telegramUser.first_name}! ðŸ‘‹
+                    ¡Hola, {telegramUser.first_name}! 👋
                   </h1>
                   <p className="text-xs text-slate-400 mt-0.5">
                     Soluciones digitales para hacer crecer tu negocio.
@@ -148,7 +148,7 @@ export default function App() {
               <div className="relative overflow-hidden bg-gradient-to-r from-amber-950/40 via-yellow-950/20 to-slate-900 border border-amber-500/30 rounded-2xl p-4 shadow-sm">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-yellow-300 flex items-center justify-center font-bold text-lg shrink-0 shadow-inner star-glow">
-                    â˜…
+                    ★
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
@@ -157,7 +157,7 @@ export default function App() {
                       </h3>
                     </div>
                     <p className="text-xs text-amber-100/70 leading-relaxed">
-                      Consulta cada servicio, revisa su precio y solicita la contrataciÃ³n desde Telegram.
+                      Consulta cada servicio, revisa su precio y solicita la contratación desde Telegram.
                     </p>
                   </div>
                 </div>
