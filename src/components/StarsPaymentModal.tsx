@@ -119,16 +119,18 @@ export const StarsPaymentModal: React.FC<StarsPaymentModalProps> = ({
               <div className="flex justify-between items-center text-xs text-slate-400"><span>Plazo de entrega:</span><span className="text-slate-200">{service.deliveryTime}</span></div>
               <div className="pt-2 border-t border-slate-800/80">
                 <div className="flex justify-between items-baseline"><span className="text-sm font-medium text-slate-200">Precio:</span><span className="text-2xl font-bold text-yellow-300">{service.pricePrefix ? `${service.pricePrefix} ` : ''}{formatPrice}</span></div>
-                <p className="mt-1 text-right text-[11px] text-slate-400">Pago en Telegram Stars: {service.starsPrice} ⭐</p>
+                <p className="mt-1 text-right text-[11px] text-slate-400">Telegram cobrará {service.starsPrice} ⭐</p>
               </div>
             </div>
             <div className="flex items-start gap-2.5 text-xs text-slate-400 bg-sky-950/30 border border-sky-900/50 p-3 rounded-xl">
               <Shield className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
-              <p className="leading-relaxed">Telegram abrirá el pago y te pedirá confirmar el cargo de {service.starsPrice} ⭐. El pedido solo se marcará como pagado cuando Telegram confirme el cobro.</p>
+              <p className="leading-relaxed">
+                Las Stars son la moneda virtual de Telegram. El precio del servicio es {formatPrice}; Telegram cobrará {service.starsPrice} ⭐ y te mostrará cómo obtenerlas si no tienes saldo. El coste de comprar Stars puede variar según Telegram, tu país y la tienda de tu dispositivo. El pedido solo se marcará como pagado cuando Telegram confirme el cobro.
+              </p>
             </div>
             {!isRealTelegram && <p className="text-xs text-amber-200">Abre Webgae desde Telegram para pagar con Stars.</p>}
             <button onClick={handlePayment} disabled={!isRealTelegram} className="w-full py-3.5 px-4 rounded-xl font-semibold text-sm bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-slate-950 hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-amber-500/20 active:scale-[0.98] transition-all">
-              Continuar al pago
+              Continuar en Telegram · {service.starsPrice} ⭐
             </button>
           </>}
 
