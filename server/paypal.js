@@ -46,13 +46,28 @@ export async function ensureOrderSchema(sql) {
   await sql`CREATE INDEX IF NOT EXISTS orders_user_timestamp ON orders (telegram_user_id, timestamp DESC)`;
 }
 
+function cleanSetting(name) {
+  const value = process.env[name]?.trim();
+  if (!value) return '';
+  const quoted = value.match(/^(['"])(.*)\1$/);
+  return quoted ? quoted[2] : value;
+}
+
+export function getPaypalClientId() {
+  return cleanSetting('PAYPAL_CLIENT_ID');
+}
+
+export function getPaypalMode() {
+  return cleanSetting('PAYPAL_MODE').toLowerCase() === 'live' ? 'live' : 'sandbox';
+}
+
 function paypalBaseUrl() {
-  return process.env.PAYPAL_MODE === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com';
+  return getPaypalMode() === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com';
 }
 
 export async function paypalRequest(path, options = {}) {
-  const clientId = process.env.PAYPAL_CLIENT_ID;
-  const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
+  const clientId = getPaypalClientId();
+  const clientSecret = cleanSetting('PAYPAL_CLIENT_SECRET');
   if (!clientId || !clientSecret) throw new Error('Configura PAYPAL_CLIENT_ID y PAYPAL_CLIENT_SECRET.');
   const authResponse = await fetch(`${paypalBaseUrl()}/v1/oauth2/token`, {
     method: 'POST',
@@ -60,7 +75,15 @@ export async function paypalRequest(path, options = {}) {
     body: 'grant_type=client_credentials',
   });
   const auth = await authResponse.json();
-  if (!authResponse.ok || !auth.access_token) throw new Error('PayPal no autorizó las credenciales configuradas.');
+  if (!authResponse.ok || !auth.access_token) {
+    console.error('PayPal OAuth rejected credentials:', {
+      mode: getPaypalMode(),
+      status: authResponse.status,
+      error: auth.error || 'unknown_error',
+      debugId: authResponse.headers.get('paypal-debug-id') || undefined,
+    });
+    throw new Error(`PayPal rechazó las credenciales del entorno ${getPaypalMode()}. Confirma que el Client ID y el Secret sean de la misma aplicación REST y del mismo entorno.`);
+  }
   const response = await fetch(`${paypalBaseUrl()}${path}`, {
     ...options,
     headers: { Authorization: `Bearer ${auth.access_token}`, 'Content-Type': 'application/json', ...(options.headers || {}) },
