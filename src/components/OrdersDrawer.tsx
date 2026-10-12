@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import { PurchaseOrder } from '../types';
-import { X, CheckCircle2, Star } from 'lucide-react';
+import { X, CheckCircle2, ClipboardList } from 'lucide-react';
 
 interface OrdersDrawerProps {
   isOpen: boolean;
@@ -28,7 +28,7 @@ export const OrdersDrawer: React.FC<OrdersDrawerProps> = ({ isOpen, onClose, ord
         <div className="p-4 overflow-y-auto space-y-3 flex-1">
           {orders.length === 0 ? (
             <div className="py-12 text-center text-slate-400 space-y-2">
-              <Star className="w-8 h-8 mx-auto text-slate-600" />
+              <ClipboardList className="w-8 h-8 mx-auto text-slate-600" />
               <p className="text-xs">Todavía no tienes pedidos.</p>
               <p className="text-[11px] text-slate-500">Selecciona un servicio del catálogo para consultar y contratarlo.</p>
             </div>
@@ -53,7 +53,7 @@ export const OrdersDrawer: React.FC<OrdersDrawerProps> = ({ isOpen, onClose, ord
                   <p className="text-lg font-bold text-yellow-300">
                     {new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(order.priceEur || order.starsPaid / 50)}
                   </p>
-                  <p className="text-[10px] text-slate-500">{order.starsPaid} Stars de Telegram</p>
+                  <p className="text-[10px] text-slate-500">{order.currency === 'XTR' ? `${order.starsPaid} Stars de Telegram` : 'Pago procesado por PayPal'}</p>
                 </div>
                 <span className="text-[11px] text-slate-500 text-right">
                   {new Date(order.timestamp).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })} - {new Date(order.timestamp).toLocaleDateString('es-ES')}

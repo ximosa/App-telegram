@@ -1,6 +1,5 @@
 import { AgencyService } from '../types';
 
-// Los importes en Stars usan la tarifa interna configurada de 50 Stars por euro.
 export const AGENCY_SERVICES: AgencyService[] = [
   {
     id: 'seo-audit-express',
@@ -9,8 +8,7 @@ export const AGENCY_SERVICES: AgencyService[] = [
     description: 'Auditoría inicial de SEO técnico, rendimiento y seguridad con recomendaciones prioritarias.',
     priceEur: 5,
     priceUnit: 'por auditoría',
-    starsPrice: 250,
-    paymentEnabled: false,
+    paymentEnabled: true,
     contactUrl: 'https://webgae.com/contact',
     deliveryTime: '24 horas',
     category: 'audit',
@@ -29,8 +27,7 @@ export const AGENCY_SERVICES: AgencyService[] = [
     description: 'Servicio mensual de mantenimiento para mantener la web actualizada y detectar incidencias.',
     priceEur: 15,
     priceUnit: 'por mes',
-    starsPrice: 750,
-    paymentEnabled: false,
+    paymentEnabled: true,
     contactUrl: 'https://webgae.com/contact',
     deliveryTime: 'Servicio mensual',
     category: 'maintenance',
@@ -50,8 +47,7 @@ export const AGENCY_SERVICES: AgencyService[] = [
     priceEur: 450,
     pricePrefix: '',
     priceUnit: 'por proyecto',
-    starsPrice: 22500,
-    paymentEnabled: false,
+    paymentEnabled: true,
     contactUrl: 'https://webgae.com/contact',
     deliveryTime: 'Plazo acordado contigo',
     category: 'development',
@@ -73,8 +69,7 @@ export const AGENCY_SERVICES: AgencyService[] = [
     priceEur: 850,
     pricePrefix: '',
     priceUnit: 'por proyecto',
-    starsPrice: 42500,
-    paymentEnabled: false,
+    paymentEnabled: true,
     contactUrl: 'https://webgae.com/contact',
     deliveryTime: 'Plazo acordado contigo',
     category: 'development',
@@ -95,7 +90,6 @@ export const AGENCY_SERVICES: AgencyService[] = [
     priceEur: 25,
     pricePrefix: 'Desde',
     priceUnit: 'por hora',
-    starsPrice: 1250,
     paymentEnabled: false,
     contactUrl: 'https://webgae.com/contact',
     deliveryTime: 'Por horas, según el proyecto',

@@ -21,9 +21,10 @@ async function ensureSchema(sql) {
   )`;
   await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS invoice_payload TEXT`;
   await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS telegram_payment_charge_id TEXT`;
+  await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS paypal_order_id TEXT`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS orders_invoice_payload_unique ON orders (invoice_payload) WHERE invoice_payload IS NOT NULL`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS orders_charge_id_unique ON orders (telegram_payment_charge_id) WHERE telegram_payment_charge_id IS NOT NULL`;
-  await sql`UPDATE orders SET status = 'pending' WHERE status = 'paid' AND telegram_payment_charge_id IS NULL`;
+  await sql`UPDATE orders SET status = 'pending' WHERE status = 'paid' AND currency = 'XTR' AND telegram_payment_charge_id IS NULL`;
 }
 
 export default async function handler(request, response) {

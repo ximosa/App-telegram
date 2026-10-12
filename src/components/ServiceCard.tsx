@@ -4,6 +4,7 @@ import { Star, CheckCircle, Clock, ShieldCheck, Zap, Code } from 'lucide-react';
 
 interface ServiceCardProps {
   service: AgencyService;
+  onSelect: () => void;
 }
 
 const categoryNames = {
@@ -13,7 +14,7 @@ const categoryNames = {
   development: 'Desarrollo web',
 };
 
-export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
+export const ServiceCard: React.FC<ServiceCardProps> = ({ service, onSelect }) => {
   const categoryIcon = {
     audit: <Zap className="w-4 h-4 text-amber-400" />,
     maintenance: <ShieldCheck className="w-4 h-4 text-emerald-400" />,
@@ -54,7 +55,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
           </span>
           {service.priceUnit && <span className="text-xs text-slate-400">{service.priceUnit}</span>}
         </div>
-        <p className="mt-1.5 text-[11px] text-slate-400">Solicita el servicio y confirma el alcance antes de empezar.</p>
+        <p className="mt-1.5 text-[11px] text-slate-400">{service.paymentEnabled ? 'Paga en euros con PayPal y consulta el pedido en tu historial.' : 'Precio por hora; consulta el alcance antes de contratar.'}</p>
       </div>
 
       <div className="space-y-2 mb-5 flex-1">
@@ -69,13 +70,13 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
         </ul>
       </div>
 
-      <a href={service.contactUrl || 'https://webgae.com/contact'} target="_blank" rel="noopener noreferrer" className={`w-full py-3 px-4 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] ${
+      {service.paymentEnabled ? <button onClick={onSelect} className={`w-full py-3 px-4 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] ${
         service.popular
           ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-600/25 hover:from-sky-400 hover:to-blue-500'
           : 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700'
       }`}>
-        Solicitar este servicio
-      </a>
+        Contratar y pagar con PayPal
+      </button> : <a href={service.contactUrl || 'https://webgae.com/contact'} target="_blank" rel="noopener noreferrer" className="w-full py-3 px-4 rounded-xl font-medium text-sm flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700">Consultar presupuesto</a>}
     </article>
   );
 };

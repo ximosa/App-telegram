@@ -3,7 +3,6 @@ export interface AgencyService {
   name: string;
   tagline: string;
   description: string;
-  starsPrice: number; // in XTR (Telegram Stars)
   priceEur: number;
   pricePrefix?: string;
   priceUnit?: string;
@@ -31,12 +30,13 @@ export interface PurchaseOrder {
   serviceName: string;
   starsPaid: number;
   priceEur: number;
-  currency: 'XTR';
+  currency: 'EUR' | 'XTR';
   timestamp: number;
   status: 'paid' | 'cancelled' | 'failed' | 'pending';
   telegramUserId: number;
   telegramUsername?: string;
   invoiceLink?: string;
+  paypalOrderId?: string;
 }
 
 export interface TelegramWebAppObject {
