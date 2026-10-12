@@ -8,7 +8,7 @@ interface PayPalButtons {
 }
 interface PayPalNamespace {
   Buttons: (options: {
-    style?: { layout?: 'vertical' | 'horizontal'; color?: 'gold' | 'blue'; shape?: 'rect'; label?: 'paypal' };
+    style?: { layout?: 'vertical' | 'horizontal'; color?: 'gold' | 'blue'; shape?: 'rect'; label?: 'paypal'; tagline?: boolean; height?: number };
     createOrder: () => Promise<string>;
     onApprove: (data: { orderID: string }) => Promise<void>;
     onCancel: () => void;
@@ -75,7 +75,7 @@ export const PayPalPaymentModal: React.FC<PayPalPaymentModalProps> = ({ service,
       if (!active || !window.paypal || !buttonContainer.current) return;
 
       buttons = window.paypal.Buttons({
-        style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
+        style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal', tagline: false, height: 40 },
         createOrder: async () => {
           const response = await fetch('/api/paypal-create-order', {
             method: 'POST',
@@ -116,20 +116,20 @@ export const PayPalPaymentModal: React.FC<PayPalPaymentModalProps> = ({ service,
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-      <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden">
-        <div className="flex items-center justify-between p-4 border-b border-slate-800/80">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-2 sm:p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
+      <div className="w-full max-w-md max-h-[calc(100dvh-1rem)] bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col" style={{ maxHeight: 'calc(var(--tg-viewport-stable-height, 100dvh) - 16px)' }}>
+        <div className="flex shrink-0 items-center justify-between px-4 py-3 border-b border-slate-800/80">
           <div className="flex items-center gap-2"><div className="w-6 h-6 rounded-full bg-sky-400/15 text-sky-300 flex items-center justify-center text-sm font-bold">P</div><span className="text-xs font-semibold uppercase tracking-wider text-slate-300">Confirma tu pedido</span></div>
           <button onClick={onClose} aria-label="Cerrar" className="p-1 rounded-full text-slate-400 hover:text-white hover:bg-slate-800"><X className="w-4 h-4" /></button>
         </div>
-        <div className="p-5 space-y-4">
-          <div><span className="text-xs text-sky-400 font-medium">Resumen de compra</span><h4 className="text-base font-semibold text-slate-100 mt-1">{service.name}</h4><p className="text-xs text-slate-400">{service.tagline}</p></div>
-          <div className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 space-y-3">
+        <div className="min-h-0 overflow-y-auto p-4 sm:p-5 space-y-3">
+          <div><span className="text-xs text-sky-400 font-medium">Resumen de compra</span><h4 className="text-base font-semibold text-slate-100 mt-0.5">{service.name}</h4><p className="text-xs text-slate-400 line-clamp-2">{service.tagline}</p></div>
+          <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 space-y-2">
             <div className="flex justify-between text-xs text-slate-400"><span>Cliente</span><span className="text-slate-200">{user.first_name}</span></div>
             <div className="flex justify-between text-xs text-slate-400"><span>Plazo estimado</span><span className="text-slate-200">{service.deliveryTime}</span></div>
             <div className="flex justify-between items-baseline pt-2 border-t border-slate-800/80"><span className="text-sm text-slate-200">Total</span><span className="text-2xl font-bold text-yellow-300">{service.pricePrefix ? `${service.pricePrefix} ` : ''}{formatPrice}</span></div>
           </div>
-          <div className="flex items-start gap-2.5 text-xs text-slate-400 bg-sky-950/30 border border-sky-900/50 p-3 rounded-xl"><Shield className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" /><p className="leading-relaxed">El pago se procesa de forma segura en PayPal. El pedido aparecerá como pagado cuando el servidor confirme el cobro.</p></div>
+          <div className="flex items-center gap-2 text-[11px] text-slate-400"><Shield className="w-3.5 h-3.5 text-sky-400 shrink-0" /><p>Pago seguro con PayPal. El pedido se confirma al completar el cobro.</p></div>
           {step === 'loading' && <div className="flex items-center justify-center gap-2 py-3 text-sm text-slate-300"><Loader2 className="w-4 h-4 animate-spin" /> Cargando PayPal…</div>}
           <div ref={buttonContainer} />
           {step === 'processing' && <div className="flex items-center justify-center gap-2 py-3 text-sm text-slate-300"><Loader2 className="w-4 h-4 animate-spin" /> Confirmando el pago con PayPal…</div>}
